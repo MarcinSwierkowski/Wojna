@@ -1,5 +1,7 @@
 package com.company;
 
+import com.company.Gracz;
+
 import java.util.Arrays;
 
 public class Main {
@@ -8,17 +10,9 @@ public class Main {
     public static void main(String[] args) {
 
         int[] tablicakart = new int[52];
-        int[] tablicakartGracz1a = new int[52];
-        int[] tablicakartGracz2a = new int[52];
-        int[] tablicakartGracz1p = new int[52];
-        int[] tablicakartGracz2p = new int[52];
-        int[] tablicaWiezien = new int[52];
 
-
-        int idGracz1 = 1;
-        int idGracz2 = 2;
-        int ileKartGracz1 = 0;
-        int ileKartGracz2 = 0;
+        Gracz gracz1 = new Gracz(1,"Janek");
+        Gracz gracz2 = new Gracz(2,"Władek");
 
 
         KartaDoGry kier2 = new KartaDoGry("2",2,"Kier", 1,0);
@@ -90,22 +84,24 @@ public class Main {
             PomieszajTablice(tablicakart,52);
         }
 
-        rozdajKarty(idGracz1,idGracz2,talia,tablicakart);
+        rozdajKarty(gracz1.id,gracz2.id,talia,tablicakart);  //do poprawki bez sensu to działa
 
 
 
 
         System.out.println();
-        pokarzKartyGracza(idGracz1,tablicakart,talia);
+        pokarzKartyGracza(gracz1.id,tablicakart,talia);
         System.out.println();
-        pokarzKartyGracza(idGracz2,tablicakart,talia);
+        pokarzKartyGracza(gracz2.id,tablicakart,talia);
         System.out.println();
 
-        wypelnijTabliceGracza(1,tablicakart,talia,tablicakartGracz1a);
-        wypelnijTabliceGracza(2,tablicakart,talia,tablicakartGracz2a);
+        wypelnijTabliceGracza(gracz1.id,tablicakart,talia,tablicakartGracz1a);
+        wypelnijTabliceGracza(gracz2.id,tablicakart,talia,tablicakartGracz2a);
 
-        ileKartGracz1 = 26;
-        ileKartGracz2 = 26;
+        gracz1.setIleKart(26);
+        gracz2.setIleKart(26);
+
+
 
         System.out.println();
         System.out.println(Arrays.toString(tablicakartGracz1a));
@@ -117,30 +113,35 @@ public class Main {
         do{
             int wynik = graj(talia[tablicakartGracz1a[i]],talia[tablicakartGracz2a[i]]);
             if(wynik==0) {
-                break;
+                tablicakartGracz1a[ileKartGracz1]=tablicakartGracz1a[i];
+                tablicakartGracz2a[ileKartGracz2]=tablicakartGracz2a[i];
+                offset = 1;
             }
             if (wynik==1){
+                offset = 1;
                 tablicakartGracz1a[ileKartGracz1]=tablicakartGracz1a[i];
                 tablicakartGracz1a[ileKartGracz1+1]=tablicakartGracz2a[i];
                 ileKartGracz1++;
                 ileKartGracz2--;
-                offset = 1;
+
             }
             if (wynik==2)
             {
+                offset = 1;
                 tablicakartGracz2a[ileKartGracz2]=tablicakartGracz2a[i];
                 tablicakartGracz2a[ileKartGracz2+1]=tablicakartGracz1a[i];
                 ileKartGracz1--;
                 ileKartGracz2++;
-                offset = 1;
+
             }
             tablicakartGracz1a= przesunTablice(tablicakartGracz1a,offset,ileKartGracz1);
             tablicakartGracz2a= przesunTablice(tablicakartGracz2a,offset,ileKartGracz2);
 
-            System.out.println();
-            System.out.println(Arrays.toString(tablicakartGracz1a));
-            System.out.println();
-            System.out.println(Arrays.toString(tablicakartGracz2a));
+            //System.out.println();
+            System.out.println(ileKartGracz1 + " - " + ileKartGracz2);
+            //System.out.println(Arrays.toString(tablicakartGracz1a));
+            //System.out.println();
+            //System.out.println(Arrays.toString(tablicakartGracz2a));
 
         } while(true);
 
@@ -173,10 +174,20 @@ public class Main {
         }
     }
 
-    private static int graj(KartaDoGry kartaDoGry1, KartaDoGry kartaDoGry2) {
-        if ( kartaDoGry1.mocFigury > kartaDoGry2.mocFigury) return 1;
-        if ( kartaDoGry1.mocFigury < kartaDoGry2.mocFigury) return 2;
-        if ( kartaDoGry1.mocFigury == kartaDoGry2.mocFigury) ;
+    private static int graj(KartaDoGry[] talia, int[] tablicaGracza1, int ileKartGracz1, int[] tablicaGracza2,int ileKartGracz2, int offset) {
+        if ( talia[tablicaGracza1[0]].mocFigury > talia[tablicaGracza2[0]].mocFigury){
+            tablicaGracza1[ileKartGracz1]=tablicaGracza1[offset];
+            tablicaGracza1[ileKartGracz1+offset]=tablicaGracza2[offset];
+            ileKartGracz1++;
+            ileKartGracz2--;
+        }
+        if ( talia[tablicaGracza1[0]].mocFigury < talia[tablicaGracza2[0]].mocFigury) {
+            tablicaGracza2[ileKartGracz2]=tablicaGracza2[offset];
+            tablicaGracza2[ileKartGracz2+1]=tablicaGracza1[offset];
+            ileKartGracz1--;
+            ileKartGracz2++;
+        }
+        if ( talia[tablicaGracza1[0]].mocFigury == talia[tablicaGracza2[0]].mocFigury);
         return 0;
     }
 

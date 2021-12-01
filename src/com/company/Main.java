@@ -7,9 +7,19 @@ public class Main {
 
     public static void main(String[] args) {
 
-        int[] tablicakart = new int[51];
+        int[] tablicakart = new int[52];
+        int[] tablicakartGracz1a = new int[52];
+        int[] tablicakartGracz2a = new int[52];
+        int[] tablicakartGracz1p = new int[52];
+        int[] tablicakartGracz2p = new int[52];
+        int[] tablicaWiezien = new int[52];
+
+
         int idGracz1 = 1;
         int idGracz2 = 2;
+        int ileKartGracz1 = 0;
+        int ileKartGracz2 = 0;
+
 
         KartaDoGry kier2 = new KartaDoGry("2",2,"Kier", 1,0);
         KartaDoGry kier3 = new KartaDoGry("3",3,"Kier", 1,1);
@@ -77,45 +87,109 @@ public class Main {
         wypelnijTabliceAssignment(tablicakart);
 
         for( int i= 0; i< 20;i++) {
-            PomieszajTablice(tablicakart);
+            PomieszajTablice(tablicakart,52);
         }
 
         rozdajKarty(idGracz1,idGracz2,talia,tablicakart);
-        System.out.println(Arrays.toString(tablicakart));
 
-        for(int i=0;i<51;i++){
-            talia[tablicakart[i]].showCard();
-        }
 
-        KartaDoGry wynik = graj(talia[tablicakart[5]],talia[tablicakart[6]]);
-        if(wynik==null) System.out.println("Wojna !!!");
-        else{
-            wynik.showCard();
-        }
+
+
+        System.out.println();
+        pokarzKartyGracza(idGracz1,tablicakart,talia);
+        System.out.println();
+        pokarzKartyGracza(idGracz2,tablicakart,talia);
+        System.out.println();
+
+        wypelnijTabliceGracza(1,tablicakart,talia,tablicakartGracz1a);
+        wypelnijTabliceGracza(2,tablicakart,talia,tablicakartGracz2a);
+
+        ileKartGracz1 = 26;
+        ileKartGracz2 = 26;
+
+        System.out.println();
+        System.out.println(Arrays.toString(tablicakartGracz1a));
+        System.out.println();
+        System.out.println(Arrays.toString(tablicakartGracz2a));
+
+        int offset =1;
+        int i =0;
+        do{
+            int wynik = graj(talia[tablicakartGracz1a[i]],talia[tablicakartGracz2a[i]]);
+            if(wynik==0) {
+                break;
+            }
+            if (wynik==1){
+                tablicakartGracz1a[ileKartGracz1]=tablicakartGracz1a[i];
+                tablicakartGracz1a[ileKartGracz1+1]=tablicakartGracz2a[i];
+                ileKartGracz1++;
+                ileKartGracz2--;
+                offset = 1;
+            }
+            if (wynik==2)
+            {
+                tablicakartGracz2a[ileKartGracz2]=tablicakartGracz2a[i];
+                tablicakartGracz2a[ileKartGracz2+1]=tablicakartGracz1a[i];
+                ileKartGracz1--;
+                ileKartGracz2++;
+                offset = 1;
+            }
+            tablicakartGracz1a= przesunTablice(tablicakartGracz1a,offset,ileKartGracz1);
+            tablicakartGracz2a= przesunTablice(tablicakartGracz2a,offset,ileKartGracz2);
+
+            System.out.println();
+            System.out.println(Arrays.toString(tablicakartGracz1a));
+            System.out.println();
+            System.out.println(Arrays.toString(tablicakartGracz2a));
+
+        } while(true);
+
+
+
 
     }
 
+    private static int[] przesunTablice(int[] tablicakart, int offset, int ilekart) {
+        int[] tablica = new int[52];
+        for (int i=offset; i<ilekart+offset; i++){
+            tablica[i-offset]=tablicakart[i];
+        }
+        return tablica;
+    }
+
+    private static void pokarzKartyGracza(int idGracz, int[] tablicaPrzypisan ,KartaDoGry[] talia) {
+        for(int i=0;i<52;i++){
+            if(talia[tablicaPrzypisan[i]].idGracza == idGracz) talia[tablicaPrzypisan[i]].showCard();
+        }
+    }
+
+    private static void wypelnijTabliceGracza(int idGracz, int[] tablicaPrzypisan ,KartaDoGry[] talia, int[] tablicaGracza) {
+        int j=0;
+        for(int i=0;i<52;i++){
+            if(talia[tablicaPrzypisan[i]].idGracza == idGracz) {
+                tablicaGracza[j]=talia[tablicaPrzypisan[i]].id;
+                j++;
+            }
+        }
+    }
+
+    private static int graj(KartaDoGry kartaDoGry1, KartaDoGry kartaDoGry2) {
+        if ( kartaDoGry1.mocFigury > kartaDoGry2.mocFigury) return 1;
+        if ( kartaDoGry1.mocFigury < kartaDoGry2.mocFigury) return 2;
+        if ( kartaDoGry1.mocFigury == kartaDoGry2.mocFigury) ;
+        return 0;
+    }
+
     private static void rozdajKarty(int idGracz1, int idGracz2, KartaDoGry[] talia, int[] tableCard) {
-        for (int i =0 ;i< (talia.length/2)-1;i++){
+        for (int i =0 ;i< (talia.length/2);i++){
             talia[tableCard[2*i]].setIdGracza(idGracz1);
             talia[tableCard[(2*i)+1]].setIdGracza(idGracz2);
         }
     }
 
-    private static KartaDoGry graj(KartaDoGry kartaDoGry1, KartaDoGry kartaDoGry2) {
-        System.out.println("Grają karty : " + kartaDoGry1.figura + "-" + kartaDoGry1.kolor +  " i " + kartaDoGry2.figura+ "-" + kartaDoGry2.kolor);
-        KartaDoGry winer = null;
-        if ( kartaDoGry1.mocFigury > kartaDoGry2.mocFigury) winer = kartaDoGry1;
-        if ( kartaDoGry1.mocFigury < kartaDoGry2.mocFigury) winer = kartaDoGry2;
-        if ( kartaDoGry1.mocFigury == kartaDoGry2.mocFigury) return winer;
 
-        System.out.println("Wygrywa : " + winer.figura + "-" + winer.kolor);
-        return winer;
-    }
-
-
-    public static void PomieszajTablice(int[] table) {
-        for (int i = 0; i < table.length-1; i++) {
+    public static void PomieszajTablice(int[] table,int zakres) {
+        for (int i = 0; i < zakres-1; i++) {
             int aktualna = table[i];
             int nastepna = table[i + 1];
             int a = (int) (Math.random() * 2.0);

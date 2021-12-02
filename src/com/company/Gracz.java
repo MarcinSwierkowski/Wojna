@@ -4,7 +4,7 @@ public class Gracz {
 
     int id;
     String name;
-    int[] tablicaKart = new int[52];
+    int[] tablicaKart = new int[60];
     int ileKart ;
 
     public Gracz(int id ,String name) {
@@ -16,7 +16,12 @@ public class Gracz {
         this.ileKart = ileKart;
     }
 
-    public void przedstawSie(){
-        System.out.println(id + ": " + name + " - " + ileKart);
+    public void przedstawSie()
+    {
+        System.out.print(id + ": " + name + " - " + ileKart + "\t[ ");
+        for (int i =0;i<ileKart;i++){
+            System.out.print(tablicaKart[i] +" ");
+        }
+        System.out.println("]");
     }
 }

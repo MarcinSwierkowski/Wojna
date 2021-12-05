@@ -2,12 +2,11 @@ package com.company;
 
 public class KartaDoGry {
 
-    String figura;
-    int mocFigury;
-    String kolor;
-    int mocKoloru;
-    int id;
-    int idGracza = 0; // 0-karta niczyja
+    private String figura;
+    private int mocFigury;
+    private String kolor;
+    private int mocKoloru;
+    private int id;
 
     public KartaDoGry(String figura, int mocFigury, String kolor, int mocKoloru, int id) {
         this.figura = figura;
@@ -17,8 +16,8 @@ public class KartaDoGry {
         this.id = id;
     }
 
-    public void setIdGracza(int idGracza) {
-        this.idGracza = idGracza;
+    public int getMocFigury() {
+        return mocFigury;
     }
 
     public void showCard(){

@@ -76,21 +76,21 @@ public class Main {
 
         Gracz[] tablicaGraczy = new Gracz[]{gracz1, gracz2};
 
-        int[] tablicakart = new int[60];
+        int[] tablicaKart = new int[60];
 
-        wypelnijTabliceAssignment(tablicakart); // tablica uzupelniona id kart od 0 - 51 po kolei
+        wypelnijTabliceAssignment(tablicaKart); // tablica uzupelniona id kart od 0 - 51 po kolei
 
-        tasowanieKart(tablicakart, 52, 20);  // tasuje id kart dostaje pseudolosowa pomieszaną tablice id kart 0-51
+        tasowanieKart(tablicaKart, 52, 20);  // tasuje id kart dostaje pseudolosowa pomieszaną tablice id kart 0-51
 
-        rozdajKarty(tablicaGraczy, tablicakart);  //rozdaje karty pomiedzy graczy w zaleznosci ilu kazdy dostaje np co 2*n karte
+        rozdajKarty(tablicaGraczy, tablicaKart);  //rozdaje karty pomiedzy graczy w zaleznosci ilu kazdy dostaje np co 2*n karte
 
         int n=0;
-        int ilepotyczek =0;
+        int ilePotyczek =0;
 
         while (gracz1.getIleKart() < 53 & gracz2.getIleKart() < 53 ){
             gracz1.przedstawSie();
             gracz2.przedstawSie();
-            System.out.println(ilepotyczek++);
+            System.out.println(ilePotyczek++);
             if(graj(talia, tablicaGraczy,n)==1) n+=2;
             else n =0;
         }
@@ -113,41 +113,41 @@ public class Main {
             //w przypadku wojny o zwyciestwie decyduje karta kolejna+1
 
     private static int graj(KartaDoGry[] talia, Gracz[] tablicaGraczy, int offset) {
-        if (talia[tablicaGraczy[0].tablicaKart[offset]].getMocFigury() > talia[tablicaGraczy[1].tablicaKart[offset]].getMocFigury()) {
+        if (talia[tablicaGraczy[0].getTablicaKart()[offset]].getMocFigury() > talia[tablicaGraczy[1].getTablicaKart()[offset]].getMocFigury()) {
             int j = 0;
             for (int i = 0; i < offset + 1; i++) {
-                tablicaGraczy[0].tablicaKart[tablicaGraczy[0].getIleKart() + i] = tablicaGraczy[0].tablicaKart[i];
+                tablicaGraczy[0].getTablicaKart()[tablicaGraczy[0].getIleKart() + i] = tablicaGraczy[0].getTablicaKart()[i];
                 j++;
             }
             for (int i = 0; i < offset + 1; i++) {
-                tablicaGraczy[0].tablicaKart[tablicaGraczy[0].getIleKart() + j] = tablicaGraczy[1].tablicaKart[i];
+                tablicaGraczy[0].getTablicaKart()[tablicaGraczy[0].getIleKart() + j] = tablicaGraczy[1].getTablicaKart()[i];
                 j++;
             }
             tablicaGraczy[0].setIleKart(tablicaGraczy[0].getIleKart() + (1 + offset));
             tablicaGraczy[1].setIleKart(tablicaGraczy[1].getIleKart() - (1 + offset));
 
-            tablicaGraczy[0].tablicaKart = przesunTablice(tablicaGraczy[0].tablicaKart, 1 + offset, tablicaGraczy[0].getIleKart());
-            tablicaGraczy[1].tablicaKart = przesunTablice(tablicaGraczy[1].tablicaKart, 1 + offset, tablicaGraczy[1].getIleKart());
+            tablicaGraczy[0].setTablicaKart(przesunTablice(tablicaGraczy[0].getTablicaKart(), 1 + offset, tablicaGraczy[0].getIleKart()));
+            tablicaGraczy[1].setTablicaKart(przesunTablice(tablicaGraczy[1].getTablicaKart(), 1 + offset, tablicaGraczy[1].getIleKart()));
             return 0;
         }
-        if (talia[tablicaGraczy[0].tablicaKart[offset]].getMocFigury() < talia[tablicaGraczy[1].tablicaKart[offset]].getMocFigury()) {
+        if (talia[tablicaGraczy[0].getTablicaKart()[offset]].getMocFigury() < talia[tablicaGraczy[1].getTablicaKart()[offset]].getMocFigury()) {
             int j = 0;
             for (int i = 0; i < offset + 1; i++) {
-                tablicaGraczy[1].tablicaKart[tablicaGraczy[1].getIleKart() + i] = tablicaGraczy[1].tablicaKart[i];
+                tablicaGraczy[1].getTablicaKart()[tablicaGraczy[1].getIleKart() + i] = tablicaGraczy[1].getTablicaKart()[i];
                 j++;
             }
             for (int i = 0; i < offset + 1; i++) {
-                tablicaGraczy[1].tablicaKart[tablicaGraczy[1].getIleKart() + j] = tablicaGraczy[0].tablicaKart[i];
+                tablicaGraczy[1].getTablicaKart()[tablicaGraczy[1].getIleKart() + j] = tablicaGraczy[0].getTablicaKart()[i];
                 j++;
             }
             tablicaGraczy[1].setIleKart(tablicaGraczy[1].getIleKart() + (1 + offset));
             tablicaGraczy[0].setIleKart(tablicaGraczy[0].getIleKart() - (1 + offset));
 
-            tablicaGraczy[0].tablicaKart = przesunTablice(tablicaGraczy[0].tablicaKart, 1 + offset, tablicaGraczy[0].getIleKart());
-            tablicaGraczy[1].tablicaKart = przesunTablice(tablicaGraczy[1].tablicaKart, 1 + offset, tablicaGraczy[1].getIleKart());
+            tablicaGraczy[0].setTablicaKart(przesunTablice(tablicaGraczy[0].getTablicaKart(), 1 + offset, tablicaGraczy[0].getIleKart()));
+            tablicaGraczy[1].setTablicaKart(przesunTablice(tablicaGraczy[1].getTablicaKart(), 1 + offset, tablicaGraczy[1].getIleKart()));
             return 0;
         }
-        if (talia[tablicaGraczy[0].tablicaKart[offset]].getMocFigury() == talia[tablicaGraczy[1].tablicaKart[offset]].getMocFigury()) {
+        if (talia[tablicaGraczy[0].getTablicaKart()[offset]].getMocFigury() == talia[tablicaGraczy[1].getTablicaKart()[offset]].getMocFigury()) {
             System.out.println("wojna !!");
             return 1;
         }
@@ -158,13 +158,13 @@ public class Main {
     private static void rozdajKarty(Gracz[] gracze, int[] tableCard) {
         for (int j = 0; j < gracze.length; j++) {
             for (int i = 0; i < 52 / gracze.length; i++) {
-                gracze[j].tablicaKart[i] = tableCard[(gracze.length * i) + j];
+                gracze[j].getTablicaKart()[i] = tableCard[(gracze.length * i) + j];
 
                 gracze[j].setIleKart(gracze[j].getIleKart()+1);
             }
         }
         for (int k = 0; k < 52 % gracze.length; k++) {
-            gracze[k].tablicaKart[(52 / gracze.length)] = tableCard[(52 / gracze.length) * gracze.length + k];
+            gracze[k].getTablicaKart()[(52 / gracze.length)] = tableCard[(52 / gracze.length) * gracze.length + k];
             gracze[k].setIleKart(gracze[k].getIleKart()+1);
         }
     }

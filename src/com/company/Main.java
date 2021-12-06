@@ -8,9 +8,9 @@ public class Main {
 
         Gracz gracz1 = new Gracz(1, "Janek");
         Gracz gracz2 = new Gracz(2, "Władek");
-        Gracz gracz3 = new Gracz(3, "Piotrek");
-        Gracz gracz4 = new Gracz(4, "Zenek");
-        Gracz gracz5 = new Gracz(5, "Paweł");
+ //       Gracz gracz3 = new Gracz(3, "Piotrek");
+ //       Gracz gracz4 = new Gracz(4, "Zenek");
+ //       Gracz gracz5 = new Gracz(5, "Paweł");
 
 
         KartaDoGry kier2 = new KartaDoGry("2", 2, "Kier", 1, 0);
@@ -96,10 +96,14 @@ public class Main {
         }
     }
 
-    private static int[] przesunTablice(int[] tablicakart, int offset, int ilekart) {
+    private static int[] przesunTablice(int[] tablicaKart, int offset, int ilekart) {
         int[] tablica = new int[60];
-        for (int i = offset; i < ilekart + offset; i++) {
-            tablica[i - offset] = tablicakart[i];
+        if(ilekart > 0) {
+//        for (int i = offset; i < ilekart + offset; i++) {
+//            tablica[i - offset] = tablicaKart[i];
+//        }
+            System.arraycopy(tablicaKart, offset, tablica, 0, ilekart);
+
         }
         return tablica;
     }
